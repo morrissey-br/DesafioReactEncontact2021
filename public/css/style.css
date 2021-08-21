@@ -1,0 +1,44 @@
+@import url('./_constants.css');
+
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-color);
+    padding-top: 100px;
+}
+
+.wrapper {
+    width: 300px;
+    margin: auto;
+}
+
+.title {
+    color: var(--main-color);
+    text-align: center;
+    padding: 20px;
+    font-size: 4rem;
+}
+
+.todoRegisterInput {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px 10px 0px 0px;
+    background-color: white;
+}
+
+.todoItem {
+    background-color: white;
+    padding: 10px;
+    border-top: .5px solid rgb(230, 230, 230);
+}
+
+.statusBar {
+    background-color: white;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
