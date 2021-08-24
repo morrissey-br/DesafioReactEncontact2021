@@ -66,10 +66,17 @@ body {
     cursor: pointer;
 }
 
-.todoItemIconDiv {
+.todoItemDiv:hover .todoItemDeleteIcon {
     color: var(--place-holder-color);
+}
+
+.todoItemIconDiv {
     padding: 20px;
     transition: var(--transition-delay);
+}
+
+.todoItemCheckIcon {
+    color: var(--place-holder-color);
 }
 
 .todoItemCheckIcon:hover {
@@ -77,7 +84,11 @@ body {
     color: green;
 }
 
-.todoItemDeleteIcon:hover {
+.todoItemDeleteIcon {
+    color: transparent;
+}
+
+.todoItemDiv:hover .todoItemDeleteIcon:hover {
     transition: var(--transition-delay);
     color: red;
 }
