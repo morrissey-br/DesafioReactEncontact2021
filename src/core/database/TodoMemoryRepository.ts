@@ -1,12 +1,21 @@
 import Todo from "../model/Todo";
-import TodoRepository from "../model/TodoRepository";
+import TodoRepository from "../services/ITodoRepository";
 import { v4 as uuid } from 'uuid';
+import { OnlineTodoGateway } from "./OnlineTodoGateway";
+import { TodoDTO } from "./dtos/TodoDTO";
 
 export default class TodoMemoryRepository implements TodoRepository {
 
     private todoList: Array<Todo> = [];
 
-    newID(): String {
+    async fetchTodosOnline(onlineTodoGateway: OnlineTodoGateway) {
+        const todoDTOs: TodoDTO[] = await onlineTodoGateway.fetchJSON()
+        todoDTOs.forEach((todoDTO) => {
+            this.todoList.push(Todo.recreate(todoDTO.id, todoDTO.title, todoDTO.isDone))
+        })
+    }
+
+    newID(): string {
         return uuid();
     }
     add(todo: Todo): void {
@@ -20,18 +29,18 @@ export default class TodoMemoryRepository implements TodoRepository {
     }
     remove(todo: Todo): void {
         const index = this.todoList.indexOf(todo)
-        if(index == -1) {
+        if (index === -1) {
             throw new Error('Todo não existe no repositório')
-        } 
+        }
         this.todoList.splice(index, 1);
     }
-    getByID(id: String): Todo {
-        const result = this.todoList.find((todo) => todo.getID == id);
+    getByID(id: string): Todo {
+        const result = this.todoList.find((todo) => todo.getID === id);
         if (!result) {
             throw new Error('Não existe todo com esse id');
         }
         return result;
-        
+
     }
     getAllTodos(): Todo[] {
         return this.todoList;
@@ -43,7 +52,7 @@ export default class TodoMemoryRepository implements TodoRepository {
         throw new Error("Method not implemented.");
     }
     completedTodosQuantity(): number {
-        return this.todoList.filter(todo => todo.getIsDone == true).length;
+        return this.todoList.filter(todo => todo.getIsDone === true).length;
     }
     removeCompletedTodos(): void {
         throw new Error("Method not implemented.");

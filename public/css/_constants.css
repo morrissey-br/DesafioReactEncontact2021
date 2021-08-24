@@ -1,4 +1,7 @@
 :root {
-    --main-color: #e47a7a;
-    --background-color: #eee6e6;
+    --main-color: #ead7d7;
+    --background-color: #f5f5f5;
+    --place-holder-color: #f3ece8;
+
+    --transition-delay: 250ms;
 }

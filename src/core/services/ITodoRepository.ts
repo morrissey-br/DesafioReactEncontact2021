@@ -1,10 +1,10 @@
-import Todo from "./Todo";
+import Todo from "../model/Todo";
 
-export default interface TodoRepository {
-    newID(): String;
+export default interface ITodoRepository {
+    newID(): string;
     add(todo: Todo): void;
     remove(todo: Todo): void;
-    getByID(id: String): Todo;
+    getByID(id: string): Todo;
     getAllTodos(): Array<Todo>;
     allTodosQuantity(): number;
     getCompletedTodos (): Array<Todo>;

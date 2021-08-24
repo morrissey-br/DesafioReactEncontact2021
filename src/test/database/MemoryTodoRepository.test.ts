@@ -1,7 +1,11 @@
+import { OnlineTodoGateway } from '../../core/database/OnlineTodoGateway';
 import TodoMemoryRepository from '../../core/database/TodoMemoryRepository';
 import Todo from '../../core/model/Todo';
 
 describe('TodoMemoryRepository Test: ', () => {
+    const onlineTodoGatewayMock: jest.Mocked<OnlineTodoGateway> = {
+        fetchJSON: jest.fn()
+    }
     let todoMemoryRepository: TodoMemoryRepository;
 
     beforeEach(() => {
@@ -14,7 +18,7 @@ describe('TodoMemoryRepository Test: ', () => {
 
     test('Deve permitir adicionar um todo e retorna-lo pelo seu id', () => {
         const todoID = todoMemoryRepository.newID();
-        const todo = new Todo(todoID, 'Título 1');
+        const todo = Todo.create(todoID, 'Título 1');
         todoMemoryRepository.add(todo);
         const todoRetornado = todoMemoryRepository.getByID(todoID);
         expect(todoRetornado).toEqual(todo);
@@ -22,33 +26,33 @@ describe('TodoMemoryRepository Test: ', () => {
 
     test('Não deve permitir adicionar um todo repetido (mesmo id), emitindo erro', () => {
         const todoID = todoMemoryRepository.newID();
-        const todo = new Todo(todoID, 'Título 1');
-        const todo2 = new Todo(todoID, 'Título 2');
+        const todo = Todo.create(todoID, 'Título 1');
+        const todo2 = Todo.create(todoID, 'Título 2');
         todoMemoryRepository.add(todo);
-        expect(() => {todoMemoryRepository.add(todo2)}).toThrowError('Todo já existente');
+        expect(() => { todoMemoryRepository.add(todo2) }).toThrowError('Todo já existente');
     });
 
     test('Deve emitir erro caso não exista todo com id passado', () => {
         const idQualquer = todoMemoryRepository.newID();
-        expect(() => {todoMemoryRepository.getByID(idQualquer)}).toThrow(new Error('Não existe todo com esse id'));
+        expect(() => { todoMemoryRepository.getByID(idQualquer) }).toThrow(new Error('Não existe todo com esse id'));
     });
 
     test('Deve permitir remover um Todo passando ele', () => {
         const todoID = todoMemoryRepository.newID();
-        const todo = new Todo(todoID, 'Título 1');
+        const todo = Todo.create(todoID, 'Título 1');
         todoMemoryRepository.add(todo);
         expect(todoMemoryRepository.getByID(todoID)).toBe(todo);
         todoMemoryRepository.remove(todo);
-        expect(() => {todoMemoryRepository.getByID(todoID)}).toThrowError('Não existe todo com esse id');
+        expect(() => { todoMemoryRepository.getByID(todoID) }).toThrowError('Não existe todo com esse id');
     })
 
     test('Deve permitir retornar todos os Todos salvos', () => {
         const todoID1 = todoMemoryRepository.newID();
-        const todo1 = new Todo(todoID1, 'Título 1');
+        const todo1 = Todo.create(todoID1, 'Título 1');
         const todoID2 = todoMemoryRepository.newID();
-        const todo2 = new Todo(todoID2, 'Título 2');
+        const todo2 = Todo.create(todoID2, 'Título 2');
         const todoID3 = todoMemoryRepository.newID();
-        const todo3 = new Todo(todoID3, 'Título 1');
+        const todo3 = Todo.create(todoID3, 'Título 1');
 
         todoMemoryRepository.add(todo1);
         todoMemoryRepository.add(todo2);
@@ -62,11 +66,11 @@ describe('TodoMemoryRepository Test: ', () => {
 
     test('Deve retornar a quantidade total de todos', () => {
         const todoID1 = todoMemoryRepository.newID();
-        const todo1 = new Todo(todoID1, 'Título 1');
+        const todo1 = Todo.create(todoID1, 'Título 1');
         const todoID2 = todoMemoryRepository.newID();
-        const todo2 = new Todo(todoID2, 'Título 2');
+        const todo2 = Todo.create(todoID2, 'Título 2');
         const todoID3 = todoMemoryRepository.newID();
-        const todo3 = new Todo(todoID3, 'Título 1');
+        const todo3 =Todo.create(todoID3, 'Título 1');
 
         todoMemoryRepository.add(todo1);
         todoMemoryRepository.add(todo2);
@@ -78,14 +82,14 @@ describe('TodoMemoryRepository Test: ', () => {
 
     test('Deve retornar a quantidade total de todos completos', () => {
         const todoID1 = todoMemoryRepository.newID();
-        const todo1 = new Todo(todoID1, 'Título 1');
+        const todo1 = Todo.create(todoID1, 'Título 1');
         const todoID2 = todoMemoryRepository.newID();
-        const todo2 = new Todo(todoID2, 'Título 2');
+        const todo2 = Todo.create(todoID2, 'Título 2');
         const todoID3 = todoMemoryRepository.newID();
-        const todo3 = new Todo(todoID3, 'Título 1');
+        const todo3 = Todo.create(todoID3, 'Título 1');
 
-        todo2.finish();
-        todo3.finish();
+        todo2.toggleDone();
+        todo3.toggleDone();
 
         todoMemoryRepository.add(todo1);
         todoMemoryRepository.add(todo2);
@@ -93,6 +97,33 @@ describe('TodoMemoryRepository Test: ', () => {
 
         const completedTodoQuantity = todoMemoryRepository.completedTodosQuantity();
         expect(completedTodoQuantity).toBe(2);
+    })
+
+    test('Deve conter método capaz de recupeerar Todos online e adicionar a lista de Todos', async () => {
+        expect(todoMemoryRepository.getAllTodos().length).toBe(0);
+
+        onlineTodoGatewayMock.fetchJSON.mockResolvedValueOnce(JSON.parse(`[
+            {
+              "id": "123",
+              "title": "Lavar os pratos",
+              "isDone": false
+            },
+            {
+              "id": "321",
+              "title": "Cortar a grama",
+              "isDone": true
+            },
+            {
+              "id": "111",
+              "title": "Comprar pão",
+              "isDone": false
+            }
+          ]`))
+        await todoMemoryRepository.fetchTodosOnline(onlineTodoGatewayMock);
+        expect(onlineTodoGatewayMock.fetchJSON).toBeCalledTimes(1)
+        const allTodos = todoMemoryRepository.getAllTodos()
+        expect(allTodos.length).toBe(3);
+        expect(allTodos[0]).toEqual(Todo.recreate("123", "Lavar os pratos", false))
     })
 
 

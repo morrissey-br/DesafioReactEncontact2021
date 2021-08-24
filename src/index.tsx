@@ -1,11 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./app";
+import { App } from "./app";
+import TodoMemoryRepository from "./core/database/TodoMemoryRepository";
+import DesafioTodoAPI from "./core/gateways/DesafioTodoAPI";
+import TodoManager from "./core/services/TodoManager";
 import reportWebVitals from "./reportWebVitals";
+
+
+  
+const onlineTodoGateway = new DesafioTodoAPI()
+const todoRepository = new TodoMemoryRepository()
+const todoManager = new TodoManager(todoRepository)
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App todoRepository={todoRepository} todoManager={todoManager} onlineTodoGateway={onlineTodoGateway}/>
   </React.StrictMode>,
   document.getElementById("root")
 );
