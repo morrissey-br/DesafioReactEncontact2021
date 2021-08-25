@@ -49,19 +49,19 @@ export default class TodoMemoryRepository implements TodoRepository {
         return this.todoList.length;
     }
     getCompletedTodos(): Todo[] {
-        throw new Error("Method not implemented.");
+        return this.todoList.filter(todo => todo.getIsDone === true)
     }
     completedTodosQuantity(): number {
         return this.todoList.filter(todo => todo.getIsDone === true).length;
     }
     removeCompletedTodos(): void {
-        throw new Error("Method not implemented.");
+        this.todoList = this.todoList.filter(todo => todo.getIsDone === false);
     }
     getActiveTodos(): Todo[] {
-        throw new Error("Method not implemented.");
+        return this.todoList.filter(todo => todo.getIsDone === false)
     }
     activeTodosQuantity(): number {
-        throw new Error("Method not implemented.");
+        return this.todoList.filter(todo => todo.getIsDone === false).length;
     }
 
 }

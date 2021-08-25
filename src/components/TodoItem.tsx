@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faCircle, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
-import Todo from '../core/model/Todo'
+import { TodoItemCheckButton, TodoItemDeleteButton, TodoItemInput, TodoItemTitle, TodoItemWrapper } from '../styles/TodoItemStyles'
 
 type TodoItemProps = {
     todo: {
@@ -10,29 +10,64 @@ type TodoItemProps = {
         title: string,
         isDone: boolean
     },
-    onClick: (todoID: string) => void,
-    onDelete: (todoID: string) => void
+    onCheckClick: (todoID: string) => void,
+    onDeleteClick: (todoID: string) => void,
+    onEditTitleFinish: (todoID: string, newTitle: string) => void
 }
 
-export const TodoItem = ({todo, onClick, onDelete}: TodoItemProps) => {
+export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish }: TodoItemProps) => {
 
-    const handleClick = () => {
-        onClick(todo.id)
+    const [isEditing, setIsEditing] = useState(false)
+    const [value, setValue] = useState(todo.title)
+
+    const renderInputOrTitle = () => {
+        if(isEditing) {
+            return (<TodoItemInput autoFocus type='text' value={value} onBlur={handleInputBlur} onKeyDown={handleInputEnter} onChange={handleInputChange} />)
+        } else {
+            return (<TodoItemTitle isDone={todo.isDone} onDoubleClick={handleEditDoubleClick}>{todo.title}</TodoItemTitle>)
+        }
     }
 
-    const handleDelete = () => {
-        onDelete(todo.id)
+    const handleCheckClick = () => {
+        onCheckClick(todo.id)
+        console.log('foi')
+    }
+
+    const handleDeleteClick = () => {
+        onDeleteClick(todo.id)
+    }
+
+    const handleEditDoubleClick = () => {
+        if (!todo.isDone) {
+            setIsEditing(true)
+        }
+    }
+
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value)
+    }
+
+    const handleInputBlur = () => {
+        setValue(todo.title)
+        setIsEditing(false)
+    }
+
+    const handleInputEnter = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            onEditTitleFinish(todo.id, value)
+            setIsEditing(false)
+        }
     }
 
     return (
-        <div className='todoItemDiv' >
-            <div className='todoItemIconDiv todoItemCheckIcon' onClick={handleClick}>
+        <TodoItemWrapper>
+            <TodoItemCheckButton isDone={todo.isDone} onClick={handleCheckClick}>
                 <FontAwesomeIcon icon={todo.isDone ? faCheckCircle : faCircle} />
-            </div>
-            <p className={`todoItemTitle ${todo.isDone ? 'todoItemTitleDone' : ''}`} onClick={handleClick}>{todo.title}</p>
-            <div className='todoItemIconDiv todoItemDeleteIcon' onClick={handleDelete}>
+            </TodoItemCheckButton>
+            {renderInputOrTitle()}
+            <TodoItemDeleteButton onClick={handleDeleteClick}>
                 <FontAwesomeIcon icon={faTimes} />
-            </div>
-        </div>
+            </TodoItemDeleteButton>
+        </TodoItemWrapper>
     )
 }

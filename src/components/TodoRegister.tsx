@@ -1,15 +1,16 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { TodoRegisterDiv, TodoRegisterIconDiv, TodoRegisterInput } from '../styles/TodoRegisterStyle'
 
 const placeholder = 'What needs to be done?'
 
 type TodoRegisterProps = {
-    onRegister: (title: string) => void;
-    onCheck: () => void;
+    onTodoRegister: (title: string) => void;
+    onTodoCheckAll: () => void;
 }
 
-export const TodoRegister = ({ onRegister, onCheck }: TodoRegisterProps) => {
+export const TodoRegister = ({ onTodoRegister, onTodoCheckAll }: TodoRegisterProps) => {
 
     const [state, setstate] = useState({
         value: ''
@@ -21,23 +22,23 @@ export const TodoRegister = ({ onRegister, onCheck }: TodoRegisterProps) => {
 
     const handleSubmit = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            onRegister(state.value)
+            onTodoRegister(state.value)
             setstate({value: ''})
         }
     }
 
     const handleCheck = () => {
-        onCheck();
+        onTodoCheckAll();
     }
 
     return (
-        <div className='todoRegisterDiv'>
-            <div className='todoRegisterIconDiv' onClick={handleCheck}>
+        <TodoRegisterDiv>
+            <TodoRegisterIconDiv className='todoRegisterIconDiv' onClick={handleCheck}>
                 <FontAwesomeIcon icon={faCheck}  />
-            </div>
-            <input className='todoRegisterInput' type="text" name="todoRegisterInput"
+            </TodoRegisterIconDiv>
+            <TodoRegisterInput className='todoRegisterInput' type="text" name="todoRegisterInput"
                 id="todoRegisterInput" placeholder={placeholder} value={state.value}
                 onChange={handleChange} onKeyDown={handleSubmit} />
-        </div>
+        </TodoRegisterDiv>
     )
 }

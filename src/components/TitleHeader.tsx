@@ -1,11 +1,10 @@
 import React from 'react'
+import { TitleHeaderContent } from '../styles/TitleHeader'
 
 const title = 'todos'
 
 export const TitleHeader = () => {
     return (
-        <div>
-            <h1 className='title'>{title}</h1>
-        </div>
+        <TitleHeaderContent>{title}</TitleHeaderContent>
     )
 }

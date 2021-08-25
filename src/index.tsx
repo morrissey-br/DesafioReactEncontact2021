@@ -5,6 +5,7 @@ import TodoMemoryRepository from "./core/database/TodoMemoryRepository";
 import DesafioTodoAPI from "./core/gateways/DesafioTodoAPI";
 import TodoManager from "./core/services/TodoManager";
 import reportWebVitals from "./reportWebVitals";
+import { GlobalStyles } from "./styles/GlobalStyles";
 
 
   
@@ -15,6 +16,7 @@ const todoManager = new TodoManager(todoRepository)
 
 ReactDOM.render(
   <React.StrictMode>
+    <GlobalStyles />
     <App todoRepository={todoRepository} todoManager={todoManager} onlineTodoGateway={onlineTodoGateway}/>
   </React.StrictMode>,
   document.getElementById("root")
