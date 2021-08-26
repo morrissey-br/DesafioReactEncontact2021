@@ -59,6 +59,8 @@ export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish 
         if (event.key === 'Enter') {
             if (value.length > 0) {
                 onEditTitleFinish(todo.id, value)
+            } else {
+                setValue(todo.title)
             }
             setIsEditing(false)
         }
@@ -69,7 +71,10 @@ export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish 
             <TodoItemCheckButton isDone={todo.isDone} onClick={handleCheckClick}>
                 <FontAwesomeIcon icon={todo.isDone ? faCheckCircle : faCircle} />
             </TodoItemCheckButton>
-            {renderInputOrTitle()}
+            {isEditing ? 
+                (<TodoItemInput autoFocus type='text' value={value} onBlur={handleInputBlur} onKeyDown={handleInputEnter} onChange={handleInputChange} />) :
+                (<TodoItemTitle isDone={todo.isDone} onDoubleClick={handleEditDoubleClick}>{todo.title}</TodoItemTitle>)
+            }
             <TodoItemDeleteButton onClick={handleDeleteClick}>
                 <FontAwesomeIcon icon={faTimes} />
             </TodoItemDeleteButton>

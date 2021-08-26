@@ -1,7 +1,10 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { TodoRegisterDiv, TodoRegisterIconDiv, TodoRegisterInput } from '../styles/TodoRegisterStyle'
+import { TodoRegisterWrapper } from './TodoRegisterWrapper'
+import { TodoRegisterAllDone } from './TodoRegisterAllDone'
+import { TodoRegisterInput } from './TodoRegisterInput'
+
 
 const placeholder = 'What needs to be done?'
 
@@ -32,13 +35,13 @@ export const TodoRegister = ({ onTodoRegister, onTodoCheckAll }: TodoRegisterPro
     }
 
     return (
-        <TodoRegisterDiv>
-            <TodoRegisterIconDiv className='todoRegisterIconDiv' onClick={handleCheck}>
+        <TodoRegisterWrapper>
+            <TodoRegisterAllDone className='todoRegisterIconDiv' onClick={handleCheck}>
                 <FontAwesomeIcon icon={faCheck}  />
-            </TodoRegisterIconDiv>
+            </TodoRegisterAllDone>
             <TodoRegisterInput className='todoRegisterInput' type="text" name="todoRegisterInput"
                 id="todoRegisterInput" placeholder={placeholder} value={value}
                 onChange={handleChange} onKeyDown={handleSubmit} />
-        </TodoRegisterDiv>
+        </TodoRegisterWrapper>
     )
 }

@@ -1,5 +1,4 @@
 import { createGlobalStyle } from "styled-components";
-import { backgroundColor } from "./_constants";
 
 export const GlobalStyles = createGlobalStyle`
     :root {
@@ -13,7 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     }
 
      body {
-        background-color: ${backgroundColor};    
-        font-family: 'Roboto';    
+        background-color: ${props => props.theme.backgroundColor};    
+        font-family: 'Roboto'!important;   
     }
 `

@@ -1,4 +1,4 @@
-import { TodoRegister } from '../../components/TodoRegister';
+import { TodoRegister } from '../../components/todo_register/TodoRegister';
 import Todo from '../../core/model/Todo';
 import ITodoRepository from '../../core/services/ITodoRepository'
 import TodoManager from '../../core/services/TodoManager'

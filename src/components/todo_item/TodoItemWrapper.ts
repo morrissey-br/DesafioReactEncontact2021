@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { placeholderColor } from "../../styles/_constants";
 
 export const TodoItemWrapper = styled.li`
     display: flex;
@@ -8,5 +7,5 @@ export const TodoItemWrapper = styled.li`
     user-select: none;  
     cursor: default;  
     height: 70px;
-    border-bottom: 1px solid ${placeholderColor};
+    border-bottom: 1px solid ${props => props.theme.placeholderColor};
 `

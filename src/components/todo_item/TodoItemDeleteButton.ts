@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { dangerColor, placeholderColor, transitionDuration } from "../../styles/_constants";
 import { TodoItemWrapper } from "./TodoItemWrapper";
 
 export const TodoItemDeleteButton = styled.button`
@@ -9,14 +8,14 @@ export const TodoItemDeleteButton = styled.button`
     font-size: 1rem;
     padding: 20px;
     cursor: pointer;
-    transition-duration: ${transitionDuration};
+    transition-duration: ${props => props.theme.transitionDuration};
     transition-property: color;
     ${TodoItemWrapper}:hover & {
-        transition-duration: ${transitionDuration};
-        color: ${placeholderColor};
+        transition-duration: ${props => props.theme.transitionDuration};
+        color: ${props => props.theme.placeholderColor};
     }
     :hover {
-        transition-duration: ${transitionDuration};
-        color: ${dangerColor}!important;
+        transition-duration: ${props => props.theme.transitionDuration};
+        color: ${props => props.theme.dangerColor}!important;
     }
 `
