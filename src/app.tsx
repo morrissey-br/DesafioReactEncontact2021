@@ -10,10 +10,10 @@ import { OnlineTodoGateway } from "./core/database/OnlineTodoGateway";
 import { AppWrapper } from "./components/app_wrapper/AppWrapper";
 import { Route, BrowserRouter,  useLocation, useRouteMatch, } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { getSyntheticLeadingComments } from "typescript";
 import { LightTheme } from "./components/theme/LightTheme";
 import { DarkTheme } from "./components/theme/DarkTheme";
 import { GlobalStyles } from "./components/global_styles/GlobalStyles";
+import { useTranslation } from 'react-i18next'
 
 type AppProps = {
   todoRepository: TodoMemoryRepository,
@@ -23,16 +23,20 @@ type AppProps = {
 
 export const App = ({ todoRepository, todoManager, onlineTodoGateway }: AppProps) => {
 
+  // States config
   const [todos, setTodos] = useState([] as Todo[])
   const [counts, setCounts] = useState({ total: 0, active: 0, completed: 0 })
   const [theme, setTheme] = useState('light')
-  let location = useLocation<BrowserRouter>()
 
+  // Init state fetch
   useEffect(() => {
     todoRepository.fetchTodosOnline(onlineTodoGateway).then(() => {
       updateState()
     })
   }, [])
+
+  // Router based list
+  let location = useLocation<BrowserRouter>()
 
   useEffect(() => {
     updateState()
@@ -57,6 +61,7 @@ export const App = ({ todoRepository, todoManager, onlineTodoGateway }: AppProps
     })
   }
 
+  // Theme chosing
   const getTheme = () => {
     switch (theme) {
       case 'light':
@@ -68,6 +73,18 @@ export const App = ({ todoRepository, todoManager, onlineTodoGateway }: AppProps
     }
   }
 
+  const handleSwitchModeClick = (darkMode: boolean) => {
+    darkMode ? setTheme('dark') : setTheme('light')
+  }
+
+  // i18n
+  const { i18n } = useTranslation()
+
+  const handleFlagClick = (flag: string) => {
+    i18n.changeLanguage(flag)
+  }
+
+  // Events
   const handleTodoRegister = (title: string) => {
     todoManager.createNewTodo(title)
     updateState()
@@ -102,7 +119,7 @@ export const App = ({ todoRepository, todoManager, onlineTodoGateway }: AppProps
     <ThemeProvider theme={getTheme()}>
     <GlobalStyles />
     <AppWrapper>
-      <Header />
+      <Header activeFlag={i18n.language} darkMode={theme === 'dark'} onFlagClick={(flag: string) => handleFlagClick(flag)} onSwitchModeClick={(darkMode: boolean) => handleSwitchModeClick(darkMode) }/>
       <TodoRegister onTodoRegister={handleTodoRegister} onTodoCheckAll={handleTodoCheckAll} />
       <TodoDisplay todos={todos} onTodoCheck={(todoID: string) => handleTodoCheck(todoID)} onTodoDelete={(todoID: string) => handleTodoDelete(todoID)} onEditTitle={(todoID: string, newTitle: string) => handleTodoEditTitle(todoID, newTitle)} />
       <ControlBar itemsQuantity={counts.total} itemsLeft={counts.active} anyToClean={counts.completed > 0 ? true : false} onCleanCompletedClick={handleCleanCompleted} />

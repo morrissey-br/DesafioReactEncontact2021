@@ -1,3 +1,4 @@
+import { Translator } from "../../i18n/Translator";
 import { ControlBarCleanCompleted } from "./ControlBarCleanCompleted";
 import { ControlBarItemsLeft } from "./ControlBarItemsLeft";
 import { ControlBarRouterLink } from "./ControlBarRouterLink";
@@ -19,11 +20,11 @@ export const ControlBar = ({itemsQuantity, itemsLeft, anyToClean, onCleanComplet
 
     return itemsQuantity > 0 ? (
         <ControlBarWrapper>
-            <ControlBarItemsLeft>{itemsLeft} items left</ControlBarItemsLeft>       
+            <ControlBarItemsLeft>{itemsLeft} {Translator(itemsLeft > 1 ? 'controlBar.moreThanOneItemLeft' : 'controlBar.oneItemLeft')}</ControlBarItemsLeft>       
             <ControlBarRouterWrapper>
-                <ControlBarRouterLink exact to='/'>Todos</ControlBarRouterLink>
-                <ControlBarRouterLink to='/active'>Ativos</ControlBarRouterLink>
-                <ControlBarRouterLink to='/complete'>Completos</ControlBarRouterLink>
+                <ControlBarRouterLink exact to='/'>{Translator('controlBar.all')}</ControlBarRouterLink>
+                <ControlBarRouterLink to='/active'>{Translator('controlBar.active')}</ControlBarRouterLink>
+                <ControlBarRouterLink to='/complete'>{Translator('controlBar.complete')}</ControlBarRouterLink>
             </ControlBarRouterWrapper>  
             {anyToClean && (<ControlBarCleanCompleted onClick={handleCleanCompletedClick}>Clean completed</ControlBarCleanCompleted> )}   
         </ControlBarWrapper>

@@ -6,6 +6,7 @@ import TodoMemoryRepository from "./core/database/TodoMemoryRepository";
 import DesafioTodoAPI from "./core/gateways/DesafioTodoAPI";
 import TodoManager from "./core/services/TodoManager";
 import reportWebVitals from "./reportWebVitals";
+import './i18n'
 
 
   

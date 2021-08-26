@@ -4,9 +4,7 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { TodoRegisterWrapper } from './TodoRegisterWrapper'
 import { TodoRegisterAllDone } from './TodoRegisterAllDone'
 import { TodoRegisterInput } from './TodoRegisterInput'
-
-
-const placeholder = 'What needs to be done?'
+import { Translator } from '../../i18n/Translator'
 
 type TodoRegisterProps = {
     onTodoRegister: (title: string) => void;
@@ -40,7 +38,7 @@ export const TodoRegister = ({ onTodoRegister, onTodoCheckAll }: TodoRegisterPro
                 <FontAwesomeIcon icon={faCheck}  />
             </TodoRegisterAllDone>
             <TodoRegisterInput className='todoRegisterInput' type="text" name="todoRegisterInput"
-                id="todoRegisterInput" placeholder={placeholder} value={value}
+                id="todoRegisterInput" placeholder={Translator('todoRegister.placeholder')} value={value}
                 onChange={handleChange} onKeyDown={handleSubmit} />
         </TodoRegisterWrapper>
     )

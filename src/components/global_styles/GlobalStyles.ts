@@ -14,5 +14,6 @@ export const GlobalStyles = createGlobalStyle`
      body {
         background-color: ${props => props.theme.backgroundColor};    
         font-family: 'Roboto'!important;   
+        transition-duration: ${props => props.theme.transitionDuration};
     }
 `
