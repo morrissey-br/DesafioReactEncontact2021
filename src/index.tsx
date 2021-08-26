@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import TodoMemoryRepository from "./core/database/TodoMemoryRepository";
 import DesafioTodoAPI from "./core/gateways/DesafioTodoAPI";
@@ -17,7 +18,9 @@ const todoManager = new TodoManager(todoRepository)
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStyles />
-    <App todoRepository={todoRepository} todoManager={todoManager} onlineTodoGateway={onlineTodoGateway}/>
+    <BrowserRouter>
+      <App todoRepository={todoRepository} todoManager={todoManager} onlineTodoGateway={onlineTodoGateway}/>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

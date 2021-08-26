@@ -12,18 +12,18 @@ type TodoRegisterProps = {
 
 export const TodoRegister = ({ onTodoRegister, onTodoCheckAll }: TodoRegisterProps) => {
 
-    const [state, setstate] = useState({
-        value: ''
-    });
+    const [value, setvalue] = useState('');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setstate({ value: event.target.value })
+        setvalue(event.target.value)
     }
 
     const handleSubmit = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            onTodoRegister(state.value)
-            setstate({value: ''})
+            if(value.length > 0) {
+                onTodoRegister(value)
+                setvalue('')
+            }
         }
     }
 
@@ -37,7 +37,7 @@ export const TodoRegister = ({ onTodoRegister, onTodoCheckAll }: TodoRegisterPro
                 <FontAwesomeIcon icon={faCheck}  />
             </TodoRegisterIconDiv>
             <TodoRegisterInput className='todoRegisterInput' type="text" name="todoRegisterInput"
-                id="todoRegisterInput" placeholder={placeholder} value={state.value}
+                id="todoRegisterInput" placeholder={placeholder} value={value}
                 onChange={handleChange} onKeyDown={handleSubmit} />
         </TodoRegisterDiv>
     )

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {mobileBreakPoint} from './_constants'
+import {mobileBreakPoint} from '../../styles/_constants'
 
-export const TitleHeaderContent = styled.h1`
+export const HeaderTitle = styled.h1`
     font-family: 'PoiretOne'!important;
     font-size: 4rem;
     text-align: center;

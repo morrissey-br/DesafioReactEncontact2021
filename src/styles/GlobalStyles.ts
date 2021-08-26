@@ -1,20 +1,19 @@
 import { createGlobalStyle } from "styled-components";
+import { backgroundColor } from "./_constants";
 
 export const GlobalStyles = createGlobalStyle`
     :root {
         font-size: 18px;
-        box-sizing: border-box;
-
-        --main-color: red;
-        --background-color: #f5f5f5;
+        box-sizing: border-box!important;
     }
 
     * {
         font-family: 'Roboto'!important; 
+        box-sizing: border-box;
     }
 
      body {
-        background-color: var(--background-color);    
+        background-color: ${backgroundColor};    
         font-family: 'Roboto';    
     }
 `

@@ -1,5 +1,6 @@
 export const mobileBreakPoint = '768px'
 export const transitionDuration = '200ms'
+export const backgroundColor = '#f5f5f5'
 export const placeholderColor = 'gainsboro'
 export const dangerColor = 'red'
 export const successColor = 'green'

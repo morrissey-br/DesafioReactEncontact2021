@@ -6,6 +6,7 @@ export const AppWrapper = styled.div`
 
     @media(max-width: 768px) {
         width: 100%;
-        margin: 10px;
+        padding: 10px;
+        margin: 0px;
     };
 `

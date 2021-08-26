@@ -1,8 +1,12 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faCircle, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
-import { TodoItemCheckButton, TodoItemDeleteButton, TodoItemInput, TodoItemTitle, TodoItemWrapper } from '../styles/TodoItemStyles'
+import { TodoItemWrapper } from './TodoItemWrapper'
+import { TodoItemInput } from './TodoItemInput'
+import { TodoItemTitle } from './TodoItemTitle'
+import { TodoItemCheckButton } from './TodoItemCheckButton'
+import { TodoItemDeleteButton } from './TodoItemDeleteButton'
 
 type TodoItemProps = {
     todo: {
@@ -21,7 +25,7 @@ export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish 
     const [value, setValue] = useState(todo.title)
 
     const renderInputOrTitle = () => {
-        if(isEditing) {
+        if (isEditing) {
             return (<TodoItemInput autoFocus type='text' value={value} onBlur={handleInputBlur} onKeyDown={handleInputEnter} onChange={handleInputChange} />)
         } else {
             return (<TodoItemTitle isDone={todo.isDone} onDoubleClick={handleEditDoubleClick}>{todo.title}</TodoItemTitle>)
@@ -30,7 +34,6 @@ export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish 
 
     const handleCheckClick = () => {
         onCheckClick(todo.id)
-        console.log('foi')
     }
 
     const handleDeleteClick = () => {
@@ -54,7 +57,9 @@ export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish 
 
     const handleInputEnter = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            onEditTitleFinish(todo.id, value)
+            if (value.length > 0) {
+                onEditTitleFinish(todo.id, value)
+            }
             setIsEditing(false)
         }
     }

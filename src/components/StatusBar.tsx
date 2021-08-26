@@ -1,5 +1,6 @@
 import React from 'react'
-import { CleanCompletedDiv, ItemsLeftDiv, RouterDiv, StatusBarWrapper } from '../styles/StatusBarStyle'
+import { Link, NavLink } from 'react-router-dom'
+import { CleanCompletedDiv, ItemsLeftDiv, RouterDiv, RouterLink, StatusBarWrapper } from '../styles/StatusBarStyle'
 
 type StatusBarProps = {
     itemsQuantity: number,
@@ -17,7 +18,11 @@ export const StatusBar = ({itemsQuantity, itemsLeft, anyToClean, onCleanComplete
     return itemsQuantity > 0 ? (
         <StatusBarWrapper>
             <ItemsLeftDiv>{itemsLeft} items left</ItemsLeftDiv>       
-            <RouterDiv>2</RouterDiv>  
+            <RouterDiv>
+                <RouterLink exact to='/'>Todos</RouterLink>
+                <RouterLink to='/active'>Ativos</RouterLink>
+                <RouterLink to='/complete'>Completos</RouterLink>
+            </RouterDiv>  
             {anyToClean ? 
                 (<CleanCompletedDiv onClick={handleCleanCompletedClick}>Clean completed</CleanCompletedDiv> ) : 
                 (<div></div>)}   
