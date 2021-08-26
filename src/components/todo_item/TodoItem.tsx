@@ -24,14 +24,6 @@ export const TodoItem = ({ todo, onCheckClick, onDeleteClick, onEditTitleFinish 
     const [isEditing, setIsEditing] = useState(false)
     const [value, setValue] = useState(todo.title)
 
-    const renderInputOrTitle = () => {
-        if (isEditing) {
-            return (<TodoItemInput autoFocus type='text' value={value} onBlur={handleInputBlur} onKeyDown={handleInputEnter} onChange={handleInputChange} />)
-        } else {
-            return (<TodoItemTitle isDone={todo.isDone} onDoubleClick={handleEditDoubleClick}>{todo.title}</TodoItemTitle>)
-        }
-    }
-
     const handleCheckClick = () => {
         onCheckClick(todo.id)
     }

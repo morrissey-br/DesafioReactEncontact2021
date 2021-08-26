@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "./components/header/Header";
 import { TodoRegister } from "./components/todo_register/TodoRegister";
 import { TodoDisplay } from "./components/todo_display/TodoDisplay";
@@ -8,7 +8,7 @@ import TodoManager from "./core/services/TodoManager";
 import TodoMemoryRepository from "./core/database/TodoMemoryRepository";
 import { OnlineTodoGateway } from "./core/database/OnlineTodoGateway";
 import { AppWrapper } from "./components/app_wrapper/AppWrapper";
-import { Route, BrowserRouter,  useLocation, useRouteMatch, } from "react-router-dom";
+import { BrowserRouter,  useLocation, } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { LightTheme } from "./components/theme/LightTheme";
 import { DarkTheme } from "./components/theme/DarkTheme";
@@ -28,20 +28,7 @@ export const App = ({ todoRepository, todoManager, onlineTodoGateway }: AppProps
   const [counts, setCounts] = useState({ total: 0, active: 0, completed: 0 })
   const [theme, setTheme] = useState('light')
 
-  // Init state fetch
-  useEffect(() => {
-    todoRepository.fetchTodosOnline(onlineTodoGateway).then(() => {
-      updateState()
-    })
-  }, [])
-
-  // Router based list
-  let location = useLocation<BrowserRouter>()
-
-  useEffect(() => {
-    updateState()
-  }, [location])
-
+  // Router based state 
   const updateState = () => {    
     switch (location.pathname) {
       case '/':
@@ -60,6 +47,19 @@ export const App = ({ todoRepository, todoManager, onlineTodoGateway }: AppProps
       completed: todoRepository.completedTodosQuantity()
     })
   }
+
+  let location = useLocation<BrowserRouter>() 
+
+  useEffect(() => {
+    updateState()
+  }, [location])
+
+  // Init state fetch
+  useEffect(() => {
+    todoRepository.fetchTodosOnline(onlineTodoGateway).then(() => {
+      updateState()
+    })
+  }, [todoRepository, onlineTodoGateway])
 
   // Theme chosing
   const getTheme = () => {

@@ -7,13 +7,10 @@ import DesafioTodoAPI from "./core/gateways/DesafioTodoAPI";
 import TodoManager from "./core/services/TodoManager";
 import reportWebVitals from "./reportWebVitals";
 import './i18n'
-
-
   
 const onlineTodoGateway = new DesafioTodoAPI()
 const todoRepository = new TodoMemoryRepository()
 const todoManager = new TodoManager(todoRepository)
-
 
 ReactDOM.render(
   <React.StrictMode>
